@@ -13,7 +13,7 @@ nconf
     protocol: "udp",
     multiplex: false
 });
-console.log( nconf.get() ) && process.exit();
+
 var server = godot.createServer({
     type: nconf.get( "protocol" ),
     multiplex: Boolean( nconf.get( "multiplex" ) ),
