@@ -3,7 +3,7 @@ var nconf = require( "nconf" );
 var OpsGenieReactor = require( "godot-opsgenie" );
 nconf.defaults({
     graphite: {
-        url: ""
+        url: "",
         prefix: "xxxx.godot",
     },
     port: 1337,
