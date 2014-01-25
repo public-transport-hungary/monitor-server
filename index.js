@@ -26,7 +26,7 @@ var server = godot.createServer({
             .where( "service", "elasticsearch/health/healtcheck" )
             .change( "state" )
             .opsgenie({
-                customerKey: nconf.get( "opsgenie.customerKey" )
+                customerKey: nconf.get( "opsgenie:customerKey" )
             })
             .console()
 
