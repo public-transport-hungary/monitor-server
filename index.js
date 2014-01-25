@@ -9,11 +9,12 @@ nconf
         prefix: "xxxx.godot",
     },
     port: 1337,
-    host: "localhost"
+    host: "localhost",
+    protocol: "udp"
 });
 
 var server = godot.createServer({
-    type: "udp",
+    type: nconf.get( "protocol" ),
     multiplex: false,
        reactors: [
          godot.reactor()
