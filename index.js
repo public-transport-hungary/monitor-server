@@ -18,7 +18,7 @@ var server = godot.createServer({
            .graphite({
              url: nconf.get( "graphite:url" ),
              prefix: nconf.get( "graphite:prefix" )
-            }),
+            })
            .console(),
         godot.reactor()
             .where( "service", "elasticsearch/health/healtcheck" )
