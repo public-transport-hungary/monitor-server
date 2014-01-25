@@ -10,12 +10,13 @@ nconf
     },
     port: 1337,
     host: "localhost",
-    protocol: "udp"
+    protocol: "udp",
+    multiplex: false
 });
-
+console.log( nconf.get() ) && process.exit();
 var server = godot.createServer({
     type: nconf.get( "protocol" ),
-    multiplex: false,
+    multiplex: Boolean( nconf.get( "multiplex" ) ),
        reactors: [
          godot.reactor()
            .graphite({
