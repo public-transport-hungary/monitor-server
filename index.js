@@ -1,14 +1,16 @@
 var godot = require( "godot" );
 var nconf = require( "nconf" );
 var OpsGenieReactor = require( "godot-opsgenie" );
-nconf.defaults({
+nconf
+  .argv()
+  .defaults({
     graphite: {
         url: "",
         prefix: "xxxx.godot",
     },
     port: 1337,
     host: "localhost"
-}).argv();
+});
 
 var server = godot.createServer({
     type: "udp",
