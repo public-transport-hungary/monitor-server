@@ -9,6 +9,7 @@ nconf
         prefix: "xxxx.godot",
     },
     port: 1337,
+    httpPort: 1338,
     host: "localhost",
     protocol: "udp",
     multiplex: false
@@ -45,3 +46,25 @@ server
           console.info( "Godot server is listening on port %s", server.port  );
         }
       });
+
+var http = require( "http" )
+var httpServer = http.createServer(function( req, res ){
+  if( req.method === "POST" ){
+    req.pipe( process.stdout, { encoding: "utf8", end: false } );
+    req.on( "end", function(){
+        process.stdout.write( "\n" );
+        res.end( "" );
+    })
+    //server._onTcpSocket( req );
+    return;
+  }
+  res.end( "beep boop" );
+});
+
+httpServer
+  .on( "error", onError )
+  .listen( nconf.get( "httpPort" ), function( err ){
+    if( !err ){
+      console.info( "Godot http server is listening on port %s", httpServer.address().port  );
+    }
+});
