@@ -21,6 +21,7 @@ var server = godot.createServer({
        reactors: [
          godot.reactor()
            .graphite({
+             interval: 100,
              url: nconf.get( "graphite:url" ),
              prefix: nconf.get( "graphite:prefix" )
             })
