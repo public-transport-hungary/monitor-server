@@ -72,7 +72,7 @@ var httpServer = http.createServer(function( req, res ){
               host: row.host,
               service: [ "collectd", row.type, row.dsnames[i] + "_" + row.dstypes[ i ] ].join( "/" ),
               metric: row.values[i],
-              time: row.time,
+              time: row.time*1000,
               tags: [],
               description: ""
             });
