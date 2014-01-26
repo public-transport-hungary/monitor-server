@@ -50,12 +50,43 @@ server
 var http = require( "http" )
 var httpServer = http.createServer(function( req, res ){
   if( req.method === "POST" ){
-    req.pipe( process.stdout, { encoding: "utf8", end: false } );
-    req.on( "end", function(){
-        process.stdout.write( "\n" );
-        res.end( "" );
+    var id = ( req.headers[ "x-real-ip" ]||req.connection.remoteAddress ) + ":1111";
+    if( !server.hosts[ id ] ){
+      server.createReactors( id );
+    }
+    var reactors = server.hosts[ id ];
+    var buffer = "";
+    req.on( "data", function( b ){
+      buffer += b;
     })
-    //server._onTcpSocket( req );
+    req.on( "end", function( b ){
+        if( b ){
+          buffer += b;
+        }
+        var json = JSON.parse( buffer );
+        json.forEach(function( row ){
+          var events = [];
+          for( var i = 0; i < row.values.length; i++ ){
+            events.push({
+              state: "ok",
+              host: row.host,
+              service: [ "collectd", row.type, row.dsnames[i] + "_" + row.dstypes[ i ] ].join( "/" ),
+              metric: row.values[i],
+              time: row.time,
+              tags: [],
+              description: ""
+            });
+          }
+          events.forEach(function( ev ){
+            reactors.forEach(function( reactor ){
+              var clone = godot.common.clone( ev );
+              console.log( clone );
+              reactor.source.write( clone );
+            });
+          });
+        });
+        res.end( "" );
+    });
     return;
   }
   res.end( "beep boop" );
